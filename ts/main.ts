@@ -41,6 +41,22 @@ function addVideoGame(){
         let game:VideoGame = getVideoGame();
         displayGame(game);
     }
+    else{
+        displayRatingsLink();
+    }
+}
+
+function displayRatingsLink(){
+    let ratingsElements = document.querySelectorAll(".rating-error");
+    for(let i = 0; i < ratingsElements.length; i++){
+        let currElem = <HTMLElement>ratingsElements[i];
+        currElem.onclick = goToRatingsPage;
+        // currElem.innerHTML += "<a target='_blank' href='http://www.esrb.org/'>Click here for info</a>";
+    }
+}
+
+function goToRatingsPage(){
+    window.open("https://www.esrb.org/", "_blank");
 }
 
 /**
@@ -111,14 +127,14 @@ function isAllDataValid():boolean{
 
     let price = getInputById("price").value;
     let priceValue = parseFloat(price);
-    if(price == "" || isNaN(priceValue){
+    if(price == "" || isNaN(priceValue)){
         isValid = false
         addErrorMessage("Price is required and must be a number");
     }
     let rating = (<HTMLOptionElement>getElem("rating")).value;
     if(rating == ""){
         isValid = false;
-        addErrorMessage("You must choose a rating");
+        addErrorMsgWithCustomClass("You must choose a rating!", "rating-error");
     }
     return isValid;
 }
@@ -130,3 +146,10 @@ function addErrorMessage(errorMessage:string) {
     errorSummary.appendChild(errorItem);
 }
 
+function addErrorMsgWithCustomClass(errorMessage:string, cssClass:string){
+    let errorSummary = getElem("validation-summary");
+    let errorItem = document.createElement("li");
+    errorItem.classList.add(cssClass);
+    errorItem.innerText = errorMessage;
+    errorSummary.appendChild(errorItem);
+}

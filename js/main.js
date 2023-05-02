@@ -21,6 +21,19 @@ function addVideoGame() {
         var game = getVideoGame();
         displayGame(game);
     }
+    else {
+        displayRatingsLink();
+    }
+}
+function displayRatingsLink() {
+    var ratingsElements = document.querySelectorAll(".rating-error");
+    for (var i = 0; i < ratingsElements.length; i++) {
+        var currElem = ratingsElements[i];
+        currElem.onclick = goToRatingsPage;
+    }
+}
+function goToRatingsPage() {
+    window.open("https://www.esrb.org/", "_blank");
 }
 function getVideoGame() {
     var game = new VideoGame();
@@ -65,13 +78,20 @@ function isAllDataValid() {
     var rating = getElem("rating").value;
     if (rating == "") {
         isValid = false;
-        addErrorMessage("You must choose a rating");
+        addErrorMsgWithCustomClass("You must choose a rating!", "rating-error");
     }
     return isValid;
 }
 function addErrorMessage(errorMessage) {
     var errorSummary = getElem("validation-summary");
     var errorItem = document.createElement("li");
+    errorItem.innerText = errorMessage;
+    errorSummary.appendChild(errorItem);
+}
+function addErrorMsgWithCustomClass(errorMessage, cssClass) {
+    var errorSummary = getElem("validation-summary");
+    var errorItem = document.createElement("li");
+    errorItem.classList.add(cssClass);
     errorItem.innerText = errorMessage;
     errorSummary.appendChild(errorItem);
 }
